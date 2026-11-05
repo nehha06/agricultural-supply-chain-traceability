@@ -1,0 +1,17 @@
+
+services:
+  web:
+    build: .
+    container_name: agritrace_app
+    ports:
+      - "5000:5000"
+    volumes:
+      - agritrace_data:/app/instance
+      - agritrace_qrcodes:/app/static/qrcodes
+    environment:
+      SECRET_KEY: "agritrace-development-secret-key"
+    restart: unless-stopped
+
+volumes:
+  agritrace_data:
+  agritrace_qrcodes:
