@@ -1,0 +1,104 @@
+
+{% extends "base.html" %}
+
+{% block title %}Dashboard | AgriTrace{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-heading">
+    <div>
+        <h1>Welcome to AgriTrace 🌱</h1>
+        <p>Agricultural Supply Chain Traceability and Produce Management System</p>
+    </div>
+    <span class="admin-label">Administrator</span>
+</div>
+
+<div class="stats">
+
+    <div class="card stat-card">
+        <p>Total Farmers</p>
+        <div class="stat-number">{{ farmer_count }}</div>
+        <span>Registered farmers</span>
+    </div>
+
+    <div class="card stat-card">
+        <p>Produce Categories</p>
+        <div class="stat-number">{{ produce_count }}</div>
+        <span>Available produce types</span>
+    </div>
+
+    <div class="card stat-card">
+        <p>Total Batches</p>
+        <div class="stat-number">{{ batch_count }}</div>
+        <span>Registered batches</span>
+    </div>
+
+    <div class="card stat-card">
+        <p>Total Quantity</p>
+        <div class="stat-number">{{ total_quantity }}</div>
+        <span>Quantity in kg</span>
+    </div>
+
+</div>
+
+<div class="dashboard-actions">
+
+    <a href="{{ url_for('main.farmers') }}" class="action-card">
+        <div>👨‍🌾</div>
+        <h3>Manage Farmers</h3>
+        <p>Register and view farmers.</p>
+    </a>
+
+    <a href="{{ url_for('main.produce') }}" class="action-card">
+        <div>🌾</div>
+        <h3>Manage Produce</h3>
+        <p>Add agricultural produce.</p>
+    </a>
+
+    <a href="{{ url_for('main.batches') }}" class="action-card">
+        <div>📦</div>
+        <h3>Manage Batches</h3>
+        <p>Create batches and QR codes.</p>
+    </a>
+
+</div>
+
+<div class="card">
+
+    <h2>Recent Produce Batches</h2>
+
+    {% if recent_batches %}
+
+    <table>
+        <thead>
+            <tr>
+                <th>Batch ID</th>
+                <th>Produce</th>
+                <th>Farmer</th>
+                <th>Quantity (kg)</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for batch in recent_batches %}
+            <tr>
+                <td>{{ batch.batch_id }}</td>
+                <td>{{ batch.produce_name }}</td>
+                <td>{{ batch.farmer_name }}</td>
+                <td>{{ batch.quantity }}</td>
+                <td>{{ batch.status }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% else %}
+
+    <p>No produce batches registered yet.</p>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,128 @@
+
+{% extends "base.html" %}
+{% block title %}Produce Batches | AgriTrace{% endblock %}
+
+{% block content %}
+<h1>Produce Batch Management</h1>
+<p>Create traceable agricultural produce batches.</p>
+
+<div class="card">
+    <h2>Create New Batch</h2>
+
+    <form method="POST">
+        <label>Select Farmer</label>
+        <select name="farmer_id" required>
+            <option value="">Select Farmer</option>
+            {% for farmer in farmers %}
+                <option value="{{ farmer.id }}">
+                    {{ farmer.name }} - {{ farmer.village }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <label>Select Produce</label>
+        <select name="produce_id" required>
+            <option value="">Select Produce</option>
+            {% for item in produce %}
+                <option value="{{ item.id }}">
+                    {{ item.name }} - {{ item.category }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <label>Quantity (kg)</label>
+        <input type="number" name="quantity"
+               min="0.01" step="0.01" required>
+
+        <label>Harvest Date</label>
+        <input type="date" name="harvest_date" required>
+
+        <label>Quality Grade</label>
+        <select name="quality" required>
+            <option value="">Select Grade</option>
+            <option value="A">Grade A</option>
+            <option value="B">Grade B</option>
+            <option value="C">Grade C</option>
+        </select>
+
+        <button type="submit">Create Batch and Generate QR</button>
+    </form>
+</div>
+
+<div class="card">
+    <h2>Registered Produce Batches</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Batch ID</th>
+                <th>Produce</th>
+                <th>Farmer</th>
+                <th>Quantity</th>
+                <th>Quality</th>
+                <th>Status</th>
+                <th>QR Code</th>
+                <th>Tracking</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for batch in batches %}
+            <tr>
+                <td>{{ batch.batch_id }}</td>
+                <td>{{ batch.produce_name }}</td>
+                <td>{{ batch.farmer_name }}</td>
+                <td>{{ batch.quantity }} kg</td>
+                <td>{{ batch.quality }}</td>
+                <td><span class="status">{{ batch.status }}</span></td>
+                <td>
+                    <img class="qr-image"
+                         src="{{ url_for('static', filename='qrcodes/' ~ batch.batch_id ~ '.png') }}"
+                         alt="Batch QR code">
+                    <br>
+                    <a href="{{ url_for('static', filename='qrcodes/' ~ batch.batch_id ~ '.png') }}"
+                       download>Download QR</a>
+                </td>
+                <td>
+                    <a href="{{ url_for('main.track_batch', batch_id=batch.batch_id) }}"
+                       target="_blank">View Journey</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="8">No batches created yet.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% if batches %}
+<div class="card">
+    <h2>Update Supply Chain Stage</h2>
+
+    <form method="POST"
+          action="{{ url_for('main.update_batch', batch_id=batches[0].batch_id) }}">
+
+        <p>Update the latest batch: <strong>{{ batches[0].batch_id }}</strong></p>
+
+        <label>Stage</label>
+        <select name="stage" required>
+            <option value="">Select Stage</option>
+            <option value="Processing">Processing</option>
+            <option value="Stored">Stored</option>
+            <option value="Dispatched">Dispatched</option>
+            <option value="Delivered">Delivered</option>
+        </select>
+
+        <label>Location</label>
+        <input type="text" name="location"
+               placeholder="Enter current location" required>
+
+        <label>Notes</label>
+        <textarea name="notes" placeholder="Additional information"></textarea>
+
+        <button type="submit">Update Journey</button>
+    </form>
+</div>
+{% endif %}
+
+{% endblock %}

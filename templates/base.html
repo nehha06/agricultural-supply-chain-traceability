@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AgriTrace{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <header class="topbar">
+        <div class="brand">🌱 AgriTrace</div>
+
+        {% if session.get('admin') %}
+        <nav>
+            <a href="{{ url_for('main.dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('main.farmers') }}">Farmers</a>
+            <a href="{{ url_for('main.produce') }}">Produce</a>
+            <a href="{{ url_for('main.batches') }}">Batches</a>
+            <a href="{{ url_for('main.logout') }}">Logout</a>
+        </nav>
+        {% endif %}
+    </header>
+
+    <main class="container">
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="message">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+
+    </main>
+
+    <footer>
+        Agricultural Supply Chain Traceability and Produce Management System
+    </footer>
+
+</body>
+</html>

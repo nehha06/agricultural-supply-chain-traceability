@@ -1,0 +1,50 @@
+
+{% extends "base.html" %}
+{% block title %}Farmers | AgriTrace{% endblock %}
+
+{% block content %}
+<h1>Farmer Management</h1>
+<p>Register and manage agricultural farmers.</p>
+
+<div class="card">
+    <h2>Register New Farmer</h2>
+    <form method="POST">
+        <label>Farmer Name</label>
+        <input type="text" name="name" placeholder="Enter farmer name" required>
+
+        <label>Phone Number</label>
+        <input type="tel" name="phone" placeholder="Enter phone number" required>
+
+        <label>Village / Location</label>
+        <input type="text" name="village" placeholder="Enter village" required>
+
+        <button type="submit">Register Farmer</button>
+    </form>
+</div>
+
+<div class="card">
+    <h2>Registered Farmers</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Village</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for farmer in farmers %}
+            <tr>
+                <td>{{ farmer.id }}</td>
+                <td>{{ farmer.name }}</td>
+                <td>{{ farmer.phone }}</td>
+                <td>{{ farmer.village }}</td>
+            </tr>
+        {% else %}
+            <tr><td colspan="4">No farmers registered yet.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+
+{% extends "base.html" %}
+{% block title %}Batch Traceability | AgriTrace{% endblock %}
+
+{% block content %}
+
+<div class="tracking-header">
+    <h1>🌱 Produce Traceability</h1>
+    <p>Complete journey of agricultural produce.</p>
+</div>
+
+<div class="card">
+    <h2>Batch Information</h2>
+
+    <table>
+        <tr><th>Batch ID</th><td>{{ batch.batch_id }}</td></tr>
+        <tr><th>Produce</th><td>{{ batch.produce_name }}</td></tr>
+        <tr><th>Category</th><td>{{ batch.category }}</td></tr>
+        <tr><th>Farmer</th><td>{{ batch.farmer_name }}</td></tr>
+        <tr><th>Village</th><td>{{ batch.village }}</td></tr>
+        <tr><th>Quantity</th><td>{{ batch.quantity }} kg</td></tr>
+        <tr><th>Harvest Date</th><td>{{ batch.harvest_date }}</td></tr>
+        <tr><th>Quality</th><td>{{ batch.quality }}</td></tr>
+        <tr><th>Current Status</th><td>{{ batch.status }}</td></tr>
+    </table>
+</div>
+
+<div class="card">
+    <h2>Supply Chain Journey</h2>
+
+    {% if history %}
+        <div class="timeline">
+            {% for item in history %}
+                <div class="timeline-item">
+                    <h3>{{ item.stage }}</h3>
+                    <p><strong>Location:</strong> {{ item.location }}</p>
+                    <p>{{ item.notes }}</p>
+                    <small>{{ item.updated_at }}</small>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No tracking updates available.</p>
+    {% endif %}
+</div>
+
+<a class="button" href="{{ url_for('main.batch_api', batch_id=batch.batch_id) }}">
+    View Batch API
+</a>
+
+{% endblock %}

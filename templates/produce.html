@@ -1,0 +1,56 @@
+
+{% extends "base.html" %}
+{% block title %}Produce | AgriTrace{% endblock %}
+
+{% block content %}
+<h1>Produce Management</h1>
+<p>Add and manage agricultural produce categories.</p>
+
+<div class="card">
+    <h2>Add New Produce</h2>
+
+    <form method="POST">
+        <label>Produce Name</label>
+        <input type="text" name="name"
+               placeholder="Example: Tomato" required>
+
+        <label>Category</label>
+        <select name="category" required>
+            <option value="">Select Category</option>
+            <option value="Vegetable">Vegetable</option>
+            <option value="Fruit">Fruit</option>
+            <option value="Grain">Grain</option>
+            <option value="Pulses">Pulses</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <button type="submit">Add Produce</button>
+    </form>
+</div>
+
+<div class="card">
+    <h2>Available Produce</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Produce Name</th>
+                <th>Category</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for item in produce %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.category }}</td>
+            </tr>
+        {% else %}
+            <tr><td colspan="3">No produce added yet.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
